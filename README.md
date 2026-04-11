@@ -1,4 +1,4 @@
-#                                Avex Neovim 
+#<h1 align="center">Avex Neovim</h1>
 ![avex-dashboard](./screenshots/dashboard.png)
 A high performance, fast and modular Neovim configuration built for developers who crave speed, simplicity and clean UI.
 Built from scratch and is a lightweight, modular and open-source. Whether you are a minimalist or a power user, Avex neovim
