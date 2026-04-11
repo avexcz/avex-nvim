@@ -1,0 +1,10 @@
+xservices:
+  avex:
+    build: .
+    image: avex-nvim:latest
+    container_name: avex-editor
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/workspace
+    working_dir: /workspace
