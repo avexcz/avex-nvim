@@ -78,7 +78,12 @@ docker run --rm -v ~/.config/nvim:/install_destination devxam5/avex-nvim \
 sh -c "cp -rv /root/.config/nvim/. /install_destination"
 ```
 
-WARNING: Add a "Backup" Warning
+4. Run and update neovim <br>
+```nvim```
+```:PackerSync```
+
+
+
 
 🛑 WARNING: Running the install command will overwrite your existing Neovim configuration. If you have an existing config, back it up first:
     ```bash
