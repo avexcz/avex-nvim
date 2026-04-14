@@ -5,6 +5,10 @@
 Avex Neovim is a lightweight and high performance configuration built from scratch.
 It is designed for developers who want a clean, distraction-free environment while maintaining powerful features.
 
+<br>
+<a href="https://dotfyle.com/avexcz/avex-nvim"><img src="https://dotfyle.com/avexcz/avex-nvim/badges/plugins?style=flat" /></a>
+<a href="https://dotfyle.com/avexcz/avex-nvim"><img src="https://dotfyle.com/avexcz/avex-nvim/badges/leaderkey?style=flat" /></a>
+<a href="https://dotfyle.com/avexcz/avex-nvim"><img src="https://dotfyle.com/avexcz/avex-nvim/badges/plugin-manager?style=flat" /></a>
 
 ## Key-features
 1. <b>Avex dashboard</b> <br>
