@@ -1,4 +1,5 @@
 vim.g.mapleader = " "
+im.keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true }) --disable spacebar moving
 
 local keymap = vim.keymap 
 local wk = require("which-key")
