@@ -104,7 +104,7 @@ Note: Alpine linux's neovim is capped to 0.11.7 version which can cause tree-sit
 
  ### Windows:
     ```bash
-    winget upgrade Neovim.Neovim
+    winget install Neovim.Neovim && winget upgrade Neovim.Neovim
     ```
 
  ### Linux:
