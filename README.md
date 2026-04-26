@@ -2,9 +2,6 @@
 
 ![avex-dashboard](./screenshots/dashboard.png)
 <br>
-[Features](./docs/feature.md)
-[Keymapping Guidelines](./docs/guidelines.md)
-<br>
 Avex Neovim is a lightweight and high performance configuration built from scratch.
 It is designed for developers who want a clean, distraction-free environment while maintaining powerful features.
 
@@ -25,6 +22,13 @@ Available visual shortcut hints made neovim easier.
 5. <b>Integrated terminal</b> <br>
 Built for fast, and efficient terminal accessible with a single keystroke. Perfect for managing scripts, and viewing outputs.
 
+<br>
+
+## Documentation
+
+[![Features](https://img.shields.io/badge/Features-docs-blueviolet?style=for-the-badge)](./docs/feature.md)
+[![Keymapping](https://img.shields.io/badge/Keymapping-docs-blue?style=for-the-badge)](./docs/guidelines.md)
+<br>
 
 ## Requirements
 1. <b>Nerd Font</b> <br>
