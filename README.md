@@ -2,6 +2,9 @@
 
 ![avex-dashboard](./screenshots/dashboard.png)
 <br>
+[Features](./docs/feature.md)
+[Keymapping Guidelines](./docs/guidelines.md)
+<br>
 Avex Neovim is a lightweight and high performance configuration built from scratch.
 It is designed for developers who want a clean, distraction-free environment while maintaining powerful features.
 

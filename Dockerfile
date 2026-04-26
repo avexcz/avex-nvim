@@ -38,4 +38,9 @@ RUN nvim --version && \
 
 WORKDIR /workspace
 
-ENTRYPOINT ["nvim"]
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["nvim"]
+

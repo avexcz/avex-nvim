@@ -4,8 +4,7 @@ if not status_ok then
 end
 
 noice.setup({
-    lsp = {
-        
+    lsp = { 
         override = {
             ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
             ["vim.lsp.util.stylize_markdown"] = true,
@@ -15,11 +14,10 @@ noice.setup({
     presets = {
         bottom_search = true,        
         command_palette = true,      
-        long_message_to_split = true, 
-        inc_rename = false,           
-        lsp_doc_border = false,       
+        long_message_to_split = true,
+        inc_rename = false,          
+        lsp_doc_border = false,
     },
-
     messages = {
         enabled = true,
         view = "notify",              -- default view for messages
@@ -27,3 +25,8 @@ noice.setup({
         view_warn = "notify",          -- view for warnings
     },
 })
+
+require("notify").setup({
+  background_colour = "#000000",
+})
+

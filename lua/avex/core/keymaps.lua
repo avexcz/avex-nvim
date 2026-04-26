@@ -1,8 +1,9 @@
 vim.g.mapleader = " "
-im.keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true }) --disable spacebar moving
 
 local keymap = vim.keymap 
 local wk = require("which-key")
+
+vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true }) --disable spacebar moving
 
 --quick plugin install
 function _G.EditPlugins()
@@ -30,8 +31,35 @@ vim.keymap.set("n", "<leader>P", _G.EditPlugins, {
   silent = true,
 })
 
+
+--line
+--line up/down in visual mode
+keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move line down" })
+keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move line up" })
+
+--move to end of right/left
+keymap.set({"n", "v"}, "}", "$",  { desc = "Move to end of line" })     -- Move to end of line (right)
+keymap.set({"n", "v"}, "{", "^",  { desc = "Move to start of line" })   -- Move to start of line (left)
+keymap.set({"n", "v"}, "<leader>H", "0",  { desc = "Move to column 0" })        -- Move to absolute start of line (column 0)
+
+--jump to next/prev paragraph
+keymap.set({"n", "v"}, "\\", "{", { desc = "Jump to prev paragraph", noremap = true })
+keymap.set({"n", "v"}, "|",  "}", { desc = "Jump to next paragraph", noremap = true })
+
+-- Replaces every occurrence of word under cursor in the file
+keymap.set("n", "<leader>rw", ":%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>",
+    { desc = "Replace word under cursor" })
+
+-- copy and cut
+keymap.set("n", "<leader>x",  '"+dd', { desc = "Cut line to clipboard" })
+keymap.set("v", "<leader>x",  '"+d',  { desc = "Cut selection to clipboard" })    
+    
+-- centered half page scroll
+keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Scroll up half page" })
+
+
 --open dashboard
-vim.keymap.set("n", "<C-d>", "<cmd>Alpha<cr>", { desc = "Open Dashboard" })
+vim.keymap.set("n", "<leader>da", "<cmd>Alpha<cr>", { desc = "Open Dashboard" })
 
 --general keymaps
 keymap.set({"n", "v"}, "<leader>+", "<C-a>", { desc = "Increment number" })
@@ -54,9 +82,16 @@ end, { desc = "All keymaps" })
 --window
 keymap.set({"n", "v"}, "<leader>sv", "<C-w>v", {desc = "Spilt into vertical window" }) -- split into vertical window
 keymap.set({"n", "v"}, "<leader>sh", "<C-w>s", {desc = "Split into horizontal window" } ) -- split into horizontal window
-keymap.set({"n", "v"}, "<leader>se", "<C-w>=", {desc = "Resize window at equal width" })  -- resize windows at equal width
+keymap.set({"n", "v"}, "<leader>s=", "<C-w>=", {desc = "Resize window at equal width" })  -- resize windows at equal width
 keymap.set({"n", "v"}, "<leader>sx", ":close<CR>", {desc = "Close current window"} ) -- close current window
-
+keymap.set("n", "<C-Up>",    "<cmd>resize +2<cr>",          { desc = "Increase window height" })
+keymap.set("n", "<C-Down>",  "<cmd>resize -2<cr>",          { desc = "Decrease window height" })
+keymap.set("n", "<C-]>",  "<cmd>vertical resize -2<cr>", { desc = "Decrease window width" })
+keymap.set("n", "<C-[>", "<cmd>vertical resize +2<cr>", { desc = "Increase window width" })
+keymap.set("n", "<C-a>", "<C-w>h", { desc = "Move to left window" })
+keymap.set("n", "<C-j>", "<C-w>j", { desc = "Move to bottom window" })
+keymap.set("n", "<C-k>", "<C-w>k", { desc = "Move to top window" })
+keymap.set("n", "<C-d>", "<C-w>l", { desc = "Move to right window" })
 
 --tab
 keymap.set("n", "<leader>1", "<cmd>BufferLineGoToBuffer 1<cr>", { desc = "Tab 1" })
@@ -69,14 +104,17 @@ keymap.set("n", "<leader>7", "<cmd>BufferLineGoToBuffer 7<cr>", { desc = "Tab 7"
 keymap.set("n", "<leader>8", "<cmd>BufferLineGoToBuffer 8<cr>", { desc = "Tab 8" })
 keymap.set("n", "<leader>9", "<cmd>BufferLineGoToBuffer 9<cr>", { desc = "Tab 9" })
 keymap.set("n", "<leader>0", "<cmd>BufferLineGoToBuffer -1<cr>", { desc = "Last Tab" })
-keymap.set("n", "<leader>x", "<cmd>bdelete<cr>", { desc = "Close Current Tab" })
+keymap.set("n", "<leader>X", "<cmd>bdelete<cr>", { desc = "Close Current Tab" })
 keymap.set("n", "<S-h>", "<cmd>BufferLineCyclePrev<cr>", { desc = "Previous Tab" })
 keymap.set("n", "<S-l>", "<cmd>BufferLineCycleNext<cr>", { desc = "Next Tab" })
 
---indentation
-keymap.set("v", "<leader><Tab>", ">gv", {desc = "Add indentation" })  -- add indent
-keymap.set("v", "<leader><S-Tab>", "<gv", {desc = "Remove Indentation" }) -- remove indent
-
+--Telescope keymapping
+keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>",  { desc = "Find files" })
+keymap.set("n", "<leader>fg", "<cmd>Telescope live_grep<cr>",   { desc = "Live grep" })
+keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<cr>",     { desc = "Find buffers" })
+keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<cr>",   { desc = "Help tags" })
+keymap.set("n", "<leader>fo", "<cmd>Telescope oldfiles<cr>",    { desc = "Recent files" })
+keymap.set("n", "<leader>fc", "<cmd>Telescope commands<cr>",    { desc = "Commands" })
 
 --text
 keymap.set("n", "<leader>a", "ggVG", {desc = "Select All" })  -- select all
@@ -87,7 +125,7 @@ keymap.set({"n", "v"}, "<leader>p", '"+p', { desc = "Paste"})  -- paste in norma
 --folder mapping
 keymap.set({"n", "v"}, "<leader>e", ":NvimTreeToggle<CR>", { desc = "Toggle file explorer" })         -- open folder tree
 
-vim.keymap.set("n", "<leader>fn", function()
+vim.keymap.set("n", "<leader>dn", function()
     vim.ui.input({ prompt = "New Folder Name: " }, function(input)
         if input and input ~= "" then
             vim.fn.mkdir(input, "p")
@@ -96,7 +134,7 @@ vim.keymap.set("n", "<leader>fn", function()
     end)
 end, {desc = "create new folder " })                                                                    -- create folder
 
-vim.keymap.set("n", "<leader>rn", function()
+vim.keymap.set("n", "<leader>dr", function()
     local old_name = vim.fn.expand("<cfile>") -- Gets name under cursor
     if old_name == "" then print("No file/folder under cursor") return end
     vim.ui.input({ prompt = "Rename " .. old_name .. " to: ", default = old_name }, function(new_name)
@@ -127,25 +165,49 @@ end, {desc = "Move folder to trash" })                                          
 
 
 --file mapping
-vim.keymap.set("n", "<leader>n", function()
+vim.keymap.set("n", "<leader>fn", function()
     local api = require("nvim-tree.api")
     api.tree.open()
     api.fs.create()
 end, { desc = "Create file" })                                                               --create file
 
-vim.keymap.set("n", "<leader>r", function()
+vim.keymap.set("n", "<leader>fr", function()
     local api = require("nvim-tree.api")
     api.tree.open()
     api.fs.rename()
 end, {desc = "Rename file" })                                                                --rename file
 
 
-vim.keymap.set("n", "<leader>d", function()
+vim.keymap.set("n", "<leader>fd", function()
     local api = require("nvim-tree.api")
     api.tree.open()
     api.fs.delete()
 end, {desc = "Delete file" })                                                                --delete file
 
+-- save
+keymap.set("n", "<leader>w", "<cmd>w<CR>",  { desc = "Save file" })
+keymap.set("n", "<leader>W", "<cmd>wa<CR>", { desc = "Save all files" })
+keymap.set("n", "<C-s>",     "<cmd>w<CR>",  { desc = "Save file" })
+
+-- quit
+keymap.set("n", "<leader>q",  "<cmd>q<CR>",  { desc = "Quit" })
+keymap.set("n", "<leader>Q",  "<cmd>qa!<CR>", { desc = "Force quit all" })
+keymap.set("n", "<leader>wq", "<cmd>wq<CR>", { desc = "Save and quit" })
+
+-- source current file
+keymap.set("n", "<leader>so", "<cmd>source %<CR>", { desc = "Source current file" })
+
+-- make file executable
+keymap.set("n", "<leader>cx", "<cmd>!chmod +x %<CR>", { desc = "Make file executable" })
+
+--quick fix
+keymap.set("n", "<leader>co", "<cmd>copen<cr>",  { desc = "Open quickfix list" })
+keymap.set("n", "<leader>cc", "<cmd>cclose<cr>", { desc = "Close quickfix list" })
+keymap.set("n", "]q",         "<cmd>cnext<cr>",  { desc = "Next quickfix item" })
+keymap.set("n", "[q",         "<cmd>cprev<cr>",  { desc = "Prev quickfix item" })
+
+-- redo
+keymap.set("n", "U", ":redo<CR>", { desc = "Redo" })
 
 --terminal
 vim.keymap.set("n", [[<leader>\]], ":ToggleTerm<CR>", {desc = "Toggle terminal" })
@@ -174,3 +236,15 @@ vim.keymap.set("n", "<leader>`", function()
         print("Diagnostics and warning Shown")
     end
 end, { desc = "Toggle Diagnostics" })
+
+
+-- git keybinds
+keymap.set("n", "<leader>gs",  "<cmd>Git<cr>",            { desc = "Git status" })
+keymap.set("n", "<leader>gb",  "<cmd>Git blame<cr>",      { desc = "Git blame" })
+keymap.set("n", "<leader>gd",  "<cmd>Gitsigns diffthis<cr>", { desc = "Git diff" })
+keymap.set("n", "<leader>gp",  "<cmd>Gitsigns preview_hunk<cr>", { desc = "Preview hunk" })
+keymap.set("n", "]h",          "<cmd>Gitsigns next_hunk<cr>",    { desc = "Next git hunk" })
+keymap.set("n", "[h",          "<cmd>Gitsigns prev_hunk<cr>",    { desc = "Prev git hunk" })
+
+-- Run macro in q register quickly
+keymap.set("n", "Q", "@q", { desc = "Run macro in q register" })

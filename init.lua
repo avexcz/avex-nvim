@@ -19,5 +19,5 @@ require("avex.plugins.bufferline")
 require("avex.core.options")
 require("avex.core.keymaps")
 require("avex.core.colorscheme")
-
+require("avex.core.autocommand")
 
