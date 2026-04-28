@@ -21,7 +21,7 @@ noice.setup({
     messages = {
         enabled = true,
         view = "notify",              -- default view for messages
-        view_error = "notify",         -- view for errors
+        view_error = "mini",         -- view for errors
         view_warn = "notify",          -- view for warnings
     },
 })
