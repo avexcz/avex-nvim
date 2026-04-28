@@ -47,8 +47,20 @@ keymap.set({"n", "v"}, "\\", "{", { desc = "Jump to prev paragraph", noremap = t
 keymap.set({"n", "v"}, "|",  "}", { desc = "Jump to next paragraph", noremap = true })
 
 -- Replaces every occurrence of word under cursor in the file
-keymap.set("n", "<leader>rw", ":%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>",
-    { desc = "Replace word under cursor" })
+vim.keymap.set("n", "<leader>rw", function()
+    local word = vim.fn.expand("<cword>")
+    local escaped = vim.fn.escape(word, [[\/.*$^~[]])
+
+    vim.ui.input({ prompt = "Replace with: ", default = word }, function(input)
+        if input and input ~= "" then
+            local replacement = vim.fn.escape(input, [[\/]])
+            vim.cmd(":%s/\\<" .. escaped .. "\\>/" .. replacement .. "/gIc")
+            vim.cmd("nohlsearch")
+        end
+    end)
+end, {
+    desc = "Replace word under cursor",
+})
 
 -- copy and cut
 keymap.set("n", "<leader>x",  '"+dd', { desc = "Cut line to clipboard" })
