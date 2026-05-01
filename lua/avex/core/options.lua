@@ -43,3 +43,10 @@ opt.shortmess = "aoOTI"
 opt.more = true
 --stop swap file (optional)
 --vim.opt.swapfile = false
+
+--disable autocomment
+vim.api.nvim_create_autocmd("BufEnter", {
+  callback = function()
+    vim.opt.formatoptions:remove({ "r", "o" })
+  end,
+})
