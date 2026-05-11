@@ -44,7 +44,7 @@ local function avex_project_search()
             }, function(confirm)
                 if confirm ~= nil and confirm:lower() == 'y' then
                     vim.fn.mkdir(input, "p")
-                    vim.cmd("cd" .. input)
+                    vim.cmd("cd " .. input)
                     print("Created and moved to: " .. input)
                     vim.cmd("Telescope find_files")
                 else

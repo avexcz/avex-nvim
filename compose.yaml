@@ -1,4 +1,4 @@
-xservices:
+services:
   avex:
     build: .
     image: avex-nvim:latest

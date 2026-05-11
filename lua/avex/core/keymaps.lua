@@ -1,7 +1,58 @@
 vim.g.mapleader = " "
 
 local keymap = vim.keymap 
-local wk = require("which-key")
+local wk_ok, wk = pcall(require, "which-key")
+
+local function diagnostics_enabled()
+    if vim.diagnostic.is_enabled then
+        return vim.diagnostic.is_enabled()
+    end
+    return vim.g.avex_diagnostics_enabled ~= false
+end
+
+local function move_to_trash(path)
+    local sysname = (vim.uv or vim.loop).os_uname().sysname:lower()
+    local is_windows = sysname:find("windows") ~= nil or vim.fn.has("win32") == 1
+    local is_mac = sysname:find("darwin") ~= nil
+
+    if is_mac then
+        local script = string.format(
+            'tell application "Finder" to move POSIX file "%s" to trash',
+            path
+        )
+        vim.fn.system({ "osascript", "-e", script })
+        return vim.v.shell_error == 0
+    end
+
+    if is_windows then
+        if vim.fn.executable("powershell.exe") == 0 then
+            return false, "powershell.exe not found"
+        end
+        local escaped = path:gsub("'", "''")
+        local cmd = "Add-Type -AssemblyName Microsoft.VisualBasic; "
+            .. string.format(
+                "[Microsoft.VisualBasic.FileIO.FileSystem]::DeleteFile('%s','OnlyErrorDialogs','SendToRecycleBin')",
+                escaped
+            )
+        vim.fn.system({ "powershell.exe", "-NoProfile", "-Command", cmd })
+        return vim.v.shell_error == 0
+    end
+
+    if vim.fn.executable("gio") == 1 then
+        vim.fn.system({ "gio", "trash", path })
+        return vim.v.shell_error == 0
+    end
+    if vim.fn.executable("trash") == 1 then
+        vim.fn.system({ "trash", path })
+        return vim.v.shell_error == 0
+    end
+    if vim.fn.executable("trash-put") == 1 then
+        vim.fn.system({ "trash-put", path })
+        return vim.v.shell_error == 0
+    end
+
+    return false, "No supported trash command found"
+end
 
 vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true }) --disable spacebar moving
 
@@ -83,12 +134,16 @@ keymap.set("i", "jk", "<ESC>", { desc = "Exit insert mode" })
 --toggle my local cheatsheet anywhere
 --AVEX's mapping
 vim.keymap.set("n", "<leader>?", function()
-  wk.show("<leader>")
+    if wk_ok then
+        wk.show("<leader>")
+    end
 end, { desc = "Show keymaps" })
 
 --ALL mapping
 vim.keymap.set("v", "<leader>?", function()
-  require("which-key").show()
+    if wk_ok then
+        wk.show()
+    end
 end, { desc = "All keymaps" })
 
 --window
@@ -164,12 +219,11 @@ vim.keymap.set("n", "<leader>rf", function()
 
     vim.ui.input({ prompt = "Move '" .. folder .. "' to trash? (y/n): "}, function(input)
         if input == "y" then
-            local cmd = string.format("osascript -e 'tell application \"Finder\" to move POSIX file \"%s\" to trash'", full_path)
-            local success = os.execute(cmd)
+            local success, err = move_to_trash(full_path)
             if success then 
                 print("Moved to trash: " .. folder)
             else
-                print("Could not move to trash.")
+                print(err or "Could not move to trash.")
             end
         end
     end)
@@ -240,11 +294,13 @@ vim.keymap.set("v", "<leader>/", "<ESC><CMD>lua require('Comment.api').toggle.li
 
 --hide and show warning
 vim.keymap.set("n", "<leader>`", function()
-    if vim.diagnostic.is_enabled() then
+    if diagnostics_enabled() then
         vim.diagnostic.enable(false)
+        vim.g.avex_diagnostics_enabled = false
         print("Diagnostics and warning Hidden")
     else
         vim.diagnostic.enable(true)
+        vim.g.avex_diagnostics_enabled = true
         print("Diagnostics and warning Shown")
     end
 end, { desc = "Toggle Diagnostics" })

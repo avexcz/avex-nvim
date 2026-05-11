@@ -3,6 +3,11 @@
 
 local M = {}
 
+local autoinstall_enabled = vim.g.avex_autoinstall == true
+if not autoinstall_enabled then
+    return M
+end
+
 
 -- ── PLATFORM DETECTION ────────────────────────────────────────────────────────
 
