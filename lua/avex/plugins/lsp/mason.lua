@@ -28,16 +28,23 @@ local on_attach = function(_, bufnr)
     vim.keymap.set("n", "nr", vim.lsp.buf.references, opts)
     vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
     vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
-    
+
     vim.keymap.set("n", "<leader>d", function()
-        vim.diagnostic.enable(not vim.diagnostic.is_enabled())
+        local enabled
+        if vim.diagnostic.is_enabled then
+            enabled = vim.diagnostic.is_enabled()
+        else
+            enabled = vim.g.avex_diagnostics_enabled ~= false
+        end
+        vim.diagnostic.enable(not enabled)
+        vim.g.avex_diagnostics_enabled = not enabled
     end, { buffer = bufnr, desc = "Toggle Diagnostics" })
 end
 
 -- Server Settings
 local servers = {
     pyright = {},
-    ts_ls = {},
+    tsserver = {},
     html = {},
     cssls = {},
     clangd = {},
@@ -46,14 +53,32 @@ local servers = {
     },
 }
 
-for server, settings in pairs(servers) do
-    vim.lsp.config(server, {
+local function setup_server(server, settings)
+    if vim.lsp.config and vim.lsp.enable then
+        vim.lsp.config(server, {
+            on_attach = on_attach,
+            capabilities = capabilities,
+            settings = settings,
+            single_file_support = true,
+        })
+        vim.lsp.enable(server)
+        return
+    end
+
+    local ok, lspconfig = pcall(require, "lspconfig")
+    if not ok or not lspconfig[server] then
+        return
+    end
+
+    lspconfig[server].setup({
         on_attach = on_attach,
         capabilities = capabilities,
         settings = settings,
         single_file_support = true,
     })
+end
 
-    vim.lsp.enable(server)
+for server, settings in pairs(servers) do
+    setup_server(server, settings)
 end
 

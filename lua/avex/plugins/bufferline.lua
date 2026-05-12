@@ -1,5 +1,8 @@
 local function setup_bufferline()
-  local bufferline = require("bufferline")
+  local ok, bufferline = pcall(require, "bufferline")
+  if not ok then
+    return
+  end
   
   --local normal = vim.api.nvim_get_hl(0, { name = "Normal" })
 

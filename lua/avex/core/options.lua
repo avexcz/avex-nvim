@@ -37,6 +37,7 @@ opt.splitbelow = true
 
 --Global hide
 vim.diagnostic.enable(false)
+vim.g.avex_diagnostics_enabled = false
 
 opt.cmdheight = 1
 opt.shortmess = "aoOTI"

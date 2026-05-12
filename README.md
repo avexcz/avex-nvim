@@ -40,6 +40,12 @@ This neovim config is optimized for [ghostty](https://ghostty.org) fast renderin
 
 NOTE: Mason is used to install and manage LSP servers, DAP servers, linters, and formatters via the `:Mason` command.
 
+Optional: Auto-install tools and Tree-sitter parsers
+If you want Avex to auto-install system tools (rg, fd, node, tree-sitter) and missing Tree-sitter parsers, enable it explicitly by adding this before the plugin requires in your `init.lua`:
+```lua
+vim.g.avex_autoinstall = true
+```
+
 <br>
 
 ## Installation Method 1

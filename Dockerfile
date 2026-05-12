@@ -1,11 +1,7 @@
-FROM alpine:edge
+FROM alpine:3.20
 
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
-    echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
-
-# Avex's requirements (unfortunately treesitter does not work due to it's version which requires 0.12.0 but alpine's neovim is capped to 0.11.7)
+# Avex's requirements (Alpine packages may lag behind the latest Neovim release)
 RUN apk update && apk add --no-cache \
-   --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community \
    neovim \
    git \
     curl \
